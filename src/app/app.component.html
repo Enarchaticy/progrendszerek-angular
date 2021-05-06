@@ -1,11 +1,11 @@
-<mat-sidenav-container *ngIf="isLoggedIn" class="sidenav-container">
+<mat-sidenav-container *ngIf="userService.isLoggedIn()" class="sidenav-container">
   <mat-sidenav #drawer class="sidenav" fixedInViewport [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
     [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="(isHandset$ | async) === false">
     <mat-toolbar>Menu</mat-toolbar>
     <mat-nav-list>
-      <a mat-list-item href="#">Link 1</a>
-      <a mat-list-item href="#">Link 2</a>
-      <a mat-list-item href="#">Link 3</a>
+      <a mat-list-item [routerLink]="['/products']">Termékek</a>
+      <a mat-list-item [routerLink]="['/asd']">Valami más</a>
+      <a mat-list-item [routerLink]="['/qwe']">harmadik</a>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
@@ -15,9 +15,11 @@
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
       <span>progrendszerek-angular</span>
+      <button class="logout" mat-icon-button type="button" (click)="logout()">
+        <mat-icon>logout</mat-icon>
+      </button>
     </mat-toolbar>
     <router-outlet></router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>
-
-<router-outlet *ngIf="!isLoggedIn"></router-outlet>
+<router-outlet *ngIf="!(userService.isLoggedIn())"></router-outlet>

@@ -9,9 +9,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
-import { of } from 'rxjs';
-import { environment } from 'src/environments/environment';
-import { UserService } from '../services/user.service';
 
 import { AuthComponent } from './auth.component';
 

@@ -1,7 +1,9 @@
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { map, shareReplay } from 'rxjs/operators';
+import { first, map, shareReplay } from 'rxjs/operators';
+import { UserService } from './services/user.service';
 
 @Component({
   selector: 'app-root',
@@ -18,5 +20,19 @@ export class AppComponent {
       map((result) => result.matches),
       shareReplay()
     );
-  constructor(private breakpointObserver: BreakpointObserver) {}
+  constructor(
+    private breakpointObserver: BreakpointObserver,
+    public userService: UserService,
+    private router: Router
+  ) {}
+
+  logout() {
+    this.userService
+      .logout()
+      .pipe(first())
+      .subscribe(() => {
+        localStorage.clear();
+        this.router.navigate(['/auth']);
+      });
+  }
 }

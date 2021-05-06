@@ -2,6 +2,8 @@ import { UserService } from './../services/user.service';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
+import { first } from 'rxjs/operators';
 
 @Component({
   selector: 'app-auth',
@@ -15,7 +17,8 @@ export class AuthComponent implements OnInit {
   isLoginActive = true;
   constructor(
     private userService: UserService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -24,7 +27,7 @@ export class AuthComponent implements OnInit {
 
   resetLoginForm(): void {
     this.loginForm = new FormGroup({
-      email: new FormControl('', [Validators.email, Validators.required]),
+      username: new FormControl('', Validators.required),
       password: new FormControl('', Validators.required),
     });
   }
@@ -55,11 +58,11 @@ export class AuthComponent implements OnInit {
         this.registrationForm.value.password ===
         this.registrationForm.value.passwordAgain
       ) {
-        this.createUser(/* {
+        this.createUser({
           email: this.registrationForm.value.email,
-          name: this.registrationForm.value.name,
+          username: this.registrationForm.value.name,
           password: this.registrationForm.value.password,
-        } */);
+        });
       } else {
         this.registrationForm.controls.passwordAgain.setErrors({
           incorrect: true,
@@ -68,39 +71,39 @@ export class AuthComponent implements OnInit {
     }
   }
 
-  private createUser(/* user: User */): void {
-    /* this.userService
-      .register(user.email, user.password)
+  private createUser(user): void {
+    this.userService
+      .create(user)
       .pipe(first())
       .subscribe(
-        (res: firebase.auth.UserCredential) => {
-          this.userService
-            .updateName(res.user, user.name)
-            .pipe(first())
-            .subscribe();
-          this.userService
-            .create(res.user.uid, {
-              isOnline: true,
-              name: user.name,
-              email: user.email,
-            })
-            .pipe(first())
-            .subscribe();
+        (res) => {
+          this.snackBar.open('Sikeres regisztráció!', null, { duration: 2000 });
+          setTimeout(() => this.setIsLoginActive(), 1000);
         },
-        () => {
-          this.snackBar.open('Something went wrong', null, { duration: 2000 });
+        (err) => {
+          console.error(err);
+          this.snackBar.open('Regisztráció sikertelen', null, {
+            duration: 2000,
+          });
         }
-      ); */
+      );
   }
 
   private loginUserWithEmailAndPassword(): void {
-    /* this.userService
-      .login(this.loginForm.value.email, this.loginForm.value.password)
+    this.userService
+      .login({
+        username: this.loginForm.value.username,
+        password: this.loginForm.value.password,
+      })
       .pipe(first())
-      .subscribe({
-        error: () => {
-          this.snackBar.open('Wrong credentials', null, { duration: 2000 });
+      .subscribe(
+        (res) => {
+          localStorage.setItem('user', this.loginForm.value.username);
+          this.router.navigate(['/products']);
         },
-      }); */
+        () => {
+          this.snackBar.open('Wrong credentials', null, { duration: 2000 });
+        }
+      );
   }
 }

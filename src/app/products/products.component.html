@@ -1,0 +1,17 @@
+<mat-card class="card" *ngFor="let product of (products$ | async)">
+
+    <mat-card-title>{{product.name}}</mat-card-title>
+    <mat-card-subtitle>{{product.price + 'ft'}}</mat-card-subtitle>
+    <mat-card-content>
+        <p *ngIf="product.description">leírás: {{product.description}}</p>
+        <p *ngIf="product.inStock">Van raktáron!</p>
+        <p *ngIf="!product.inStock">Nincs raktáron!</p>
+
+    </mat-card-content>
+
+    <mat-card-actions>
+        <button mat-raised-button color="primary" [disabled]="!product.inStock" (click)="buyItem(product)">
+            <mat-icon>shopping_cart</mat-icon>Vásárlás
+        </button>
+    </mat-card-actions>
+</mat-card>

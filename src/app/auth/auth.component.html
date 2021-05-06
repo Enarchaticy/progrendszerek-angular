@@ -5,9 +5,9 @@
     </mat-card-header>
     <form *ngIf="isLoginActive&&loginForm" [formGroup]="loginForm" (ngSubmit)="submit()">
       <mat-form-field class="full-width">
-        <input matInput placeholder="Email" formControlName="email">
-        <mat-error *ngIf="loginForm.controls.email.hasError('required')||loginForm.controls.email.hasError('email')">
-          Has to be an email!
+        <input matInput placeholder="Username" formControlName="username">
+        <mat-error *ngIf="loginForm.controls.username.hasError('required')">
+          Name is required!
         </mat-error>
       </mat-form-field>
       <mat-form-field class="full-width">
