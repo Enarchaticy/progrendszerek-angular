@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './auth-guard/auth.guard';
 
 const routes: Routes = [
+  { path: '', redirectTo: 'products', pathMatch: 'full' },
   {
     path: 'products',
     loadChildren: () =>
@@ -10,16 +11,26 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
+    path: 'edit',
+    loadChildren: () =>
+      import('./edit/edit.module').then((m) => m.EditModule),
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'list',
+    loadChildren: () =>
+      import('./list/list.module').then((m) => m.ListModule),
+    canActivate: [AuthGuard],
+  },
+  {
     path: 'auth',
     loadChildren: () => import('./auth/auth.module').then((m) => m.AuthModule),
   },
   {
-    path: 'error',
+    path: '**',
     loadChildren: () =>
       import('./error/error.module').then((m) => m.ErrorModule),
   },
-  { path: '', redirectTo: 'products', pathMatch: 'full' },
-  { path: '**', redirectTo: 'error', pathMatch: 'full' },
 ];
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

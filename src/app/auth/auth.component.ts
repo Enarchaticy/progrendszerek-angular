@@ -3,7 +3,8 @@ import { FormGroup, Validators, FormControl } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { first } from 'rxjs/operators';
+import { first, map } from 'rxjs/operators';
+import { pipe } from 'rxjs';
 
 @Component({
   selector: 'app-auth',
@@ -99,11 +100,21 @@ export class AuthComponent implements OnInit {
       .subscribe(
         (res) => {
           localStorage.setItem('user', this.loginForm.value.username);
-          this.router.navigate(['/products']);
+          this.getStatus();
         },
         () => {
           this.snackBar.open('Wrong credentials', null, { duration: 2000 });
         }
       );
+  }
+
+  private getStatus() {
+    this.userService
+      .status()
+      .pipe(first(),map((res: any) => res.body))
+      .subscribe((res: any) => {
+        localStorage.setItem('role', JSON.parse(res).user.accessLevel);
+        this.router.navigate(['/products']);
+      });
   }
 }

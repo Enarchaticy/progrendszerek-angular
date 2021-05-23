@@ -35,4 +35,8 @@ export class AppComponent {
         this.router.navigate(['/auth']);
       });
   }
+
+  isAdmin(): boolean {
+    return localStorage.getItem('role') === 'admin';
+  }
 }

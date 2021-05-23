@@ -4,8 +4,8 @@
     <mat-toolbar>Menu</mat-toolbar>
     <mat-nav-list>
       <a mat-list-item [routerLink]="['/products']">Termékek</a>
-      <a mat-list-item [routerLink]="['/asd']">Valami más</a>
-      <a mat-list-item [routerLink]="['/qwe']">harmadik</a>
+      <a *ngIf="isAdmin()" mat-list-item [routerLink]="['/edit']">Szerkesztés</a>
+      <a mat-list-item [routerLink]="['/list']">list</a>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>

@@ -1,0 +1,18 @@
+<form *ngIf="form" [formGroup]="form" (ngSubmit)="submit()">
+    Ha beírod az _id-t akkor updateli azt a terméket, ha üressen hagyod, akkor új terméket hoz létre, más megerősítás
+    arról hogy elkészült nincs, csak az, hogy konzol írja a művelet eredményét
+    <mat-form-field class="full-width">
+        <input matInput placeholder="_id" formControlName="_id">
+    </mat-form-field>
+    <mat-form-field class="full-width">
+        <input matInput placeholder="name" formControlName="name">
+    </mat-form-field>
+    <mat-form-field class="full-width">
+        <input matInput placeholder="price" formControlName="price">
+    </mat-form-field>
+    <mat-form-field class="full-width">
+        <input matInput placeholder="description" formControlName="description">
+    </mat-form-field>
+    <button mat-stroked-button (click)="reset()">Cancel</button>
+    <button mat-raised-button color="primary" [disabled]="form.invalid" (click)="submit()">Submit</button>
+</form>

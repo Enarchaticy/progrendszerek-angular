@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -9,7 +10,7 @@ export class UserService {
   constructor(private http: HttpClient) {}
 
   create(user): Observable<unknown> {
-    return this.http.post('http://localhost:8080/user', user, {
+    return this.http.post(environment.expressApiUrl + 'user', user, {
       withCredentials: true,
       responseType: 'text',
       observe: 'response' as 'response',
@@ -17,7 +18,15 @@ export class UserService {
   }
 
   login(user): Observable<unknown> {
-    return this.http.post('http://localhost:8080/login', user, {
+    return this.http.post(environment.expressApiUrl + 'login', user, {
+      withCredentials: true,
+      responseType: 'text',
+      observe: 'response' as 'response',
+    });
+  }
+
+  status(): Observable<unknown> {
+    return this.http.get(environment.expressApiUrl + 'status', {
       withCredentials: true,
       responseType: 'text',
       observe: 'response' as 'response',
@@ -25,7 +34,7 @@ export class UserService {
   }
 
   logout(): Observable<unknown> {
-    return this.http.post('http://localhost:8080/logout', {
+    return this.http.post(environment.expressApiUrl + 'logout', {
       withCredentials: true,
       responseType: 'text',
       observe: 'response' as 'response',
